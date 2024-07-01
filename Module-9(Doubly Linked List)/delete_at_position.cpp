@@ -45,19 +45,29 @@ void deleteAtPosition(Node* head, int pos)
     tmp->next->prev = tmp;
     delete deleteNode;
 }
-void deleteTail(Node*& tail)
+void deleteTail(Node*& head, Node*& tail)
 {
     Node* deleteNode = tail;
     tail = tail->prev;
     delete deleteNode;
+    if(tail == NULL)
+    {
+        head = NULL;
+        return;
+    }
     tail->next = NULL;
 }
-void deleteHead(Node*& head)
+void deleteHead(Node*& head, Node*& tail)
 {
     Node* deleteNode = head;
     head = head->next;
-    head->prev = NULL;
     delete deleteNode;
+    if(head == NULL)
+    {
+        tail = NULL;
+        return;
+    }
+    head->prev = NULL;
 }
 int size(Node *head)
 {
@@ -73,8 +83,12 @@ int size(Node *head)
 }
 int main()
 {
-    Node* head = NULL;
-    Node* tail = NULL;
+    // Node* head = NULL;
+    // Node* tail = NULL;
+
+    Node* head = new Node(10);
+    Node* tail = head;
+
     // Node *head = new Node(10);
     // Node *a = new Node(20);
     // Node *b = new Node(30);
@@ -93,8 +107,8 @@ int main()
     int pos;
     cin >> pos;
     if(pos >= size(head)) cout << "Invalid" << endl;
-    else if(pos == 0) deleteHead(head);
-    else if(pos == size(head) - 1) deleteTail(tail);
+    else if(pos == 0) deleteHead(head, tail);
+    else if(pos == size(head) - 1) deleteTail(head, tail);
     else deleteAtPosition(head, pos);
     printForwardDLL(head);
     printBackwardDLL(tail);
